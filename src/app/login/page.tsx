@@ -3,7 +3,7 @@ import React,{useState,useEffect} from "react"
 import axios from "axios"
 import  {useRouter} from  "next/navigation"
 import toast from "react-hot-toast"
-
+import { Input } from "@/components/ui/input"
 
 export default function page(){
     const router = useRouter()
@@ -12,6 +12,12 @@ export default function page(){
         email:"",
         password:"",
     })
+    const handleOnChange = (e:any)=>{
+      setUser((prevData)=>({
+          ...prevData,
+          [e.target.name]:e.target.value
+      }))
+  }
     const [buttondisabled, setButtondisabled] = useState(false);
     const onLogin = async ()=>{
         try {
@@ -20,6 +26,7 @@ export default function page(){
             console.log("login success");
             toast.success("login success")
             router.push("/profile")
+            router.forward()
             
         } catch (error:any) {
             console.log("login failed",error.message);
@@ -46,6 +53,47 @@ export default function page(){
         <h1>
             {loading ? "Processing":"Login"}
         </h1>
+        <div className="z-10">
+            <form className="m-6 flex w-full 
+            flex-col items-center gap-y-4"
+            >
+                <label className="w-full">
+                    <p className="mb-1 text-sm text-white">
+                        Email
+                    </p>
+                    <Input
+                    name="email"
+                    className="border-gray-300 focus:border-gray-600"
+                    type="email"
+                    placeholder="enter email"
+                    value={user.email}
+                    onChange={handleOnChange}
+                    />
+                </label>
+                <label className="w-full">
+                    <p className="mb-1 text-sm text-white">
+                        Password
+                    </p>
+                    <Input
+                    name="password"
+                    className="border-gray-300"
+                    type="password"
+                    placeholder="enter password"
+                    value={user.password}
+                    onChange={handleOnChange}
+                    />
+                </label>
+                <button className="p-2 border
+             border-gray-300 rounded-lg mb-4 text-white
+             focus:outline-none focus:border-gray-600"
+             onClick={onLogin}
+             >
+                {
+                    buttondisabled ? "No Login":"Login"
+                }
+            </button>
+            </form>
+            </div>
     </div>
   )
 }

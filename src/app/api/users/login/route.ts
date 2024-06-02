@@ -3,14 +3,17 @@ import {NextRequest,NextResponse} from "next/server"
 
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
+import {connect} from "@/dbConfig/dbConfig"
+
+connect()
 
 export async function POST(request : NextRequest) {
     try {
         const reqBody = await request.json()
         const {email,password} = reqBody
-        console.log(reqBody);
+        console.log("printing reqbody from backend",reqBody);
 
-        const user = await User.findOne({email})
+        const user = await User.findOne({email:email})
         if(!user){
             return NextResponse.json({error:"user doesnot exist"},
                 {status:400}
@@ -42,7 +45,7 @@ export async function POST(request : NextRequest) {
         return response;
 
     } catch (error:any) {
-        return NextResponse.json({error:error.message},
+        return NextResponse.json({error:error.message,message:"failed in api"},
             {status:500}
         )
     }
