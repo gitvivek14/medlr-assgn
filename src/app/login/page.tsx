@@ -49,7 +49,7 @@ export default function Page(){
     
   return (
     <div className="flex flex-col items-center
-     justify-center min-h-screen py-2">
+     justify-center min-h-screen py-2 text-black">
         <h1>
             {loading ? "Processing":"Login"}
         </h1>
@@ -58,7 +58,7 @@ export default function Page(){
             flex-col items-center gap-y-4"
             >
                 <label className="w-full">
-                    <p className="mb-1 text-sm text-white">
+                    <p className="mb-1 text-sm text-black">
                         Email
                     </p>
                     <Input
@@ -71,7 +71,7 @@ export default function Page(){
                     />
                 </label>
                 <label className="w-full">
-                    <p className="mb-1 text-sm text-white">
+                    <p className="mb-1 text-sm text-black">
                         Password
                     </p>
                     <Input
