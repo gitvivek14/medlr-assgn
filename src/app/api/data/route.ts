@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     const collection = await db
       .collection("data")
       .find(query)
-      .sort(sort)
+      .sort(sortOption)
       .skip(skip1)
       .limit(10)
       .toArray();
