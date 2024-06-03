@@ -5,21 +5,19 @@ import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-  
-
 export default function Home() {
-    const [Page, setPage] = useState(1)
-    const [loading , setloading ] = useState(false)
-    const [totalPages, setTotalPages] = useState(1)
-    const [data, setdata] = useState("null");
-    const [sort, setSort] = useState('');
-    const [minPrice, setMinPrice] = useState<number | string>('');
-  const [maxPrice, setMaxPrice] = useState<number | string>('');
-  const [manufacturer, setManufacturer] = useState('');
-    const [medname, setMedname] = useState('')
+  const [Page, setPage] = useState(1);
+  const [loading, setloading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [data, setdata] = useState("null");
+  const [sort, setSort] = useState("");
+  const [minPrice, setMinPrice] = useState<number | string>("");
+  const [maxPrice, setMaxPrice] = useState<number | string>("");
+  const [manufacturer, setManufacturer] = useState("");
+  const [medname, setMedname] = useState("");
   const [MedicineData, setMedicineData] = useState([]);
   const getalluserdetails = async () => {
     try {
@@ -30,46 +28,48 @@ export default function Home() {
       console.log(error);
     }
   };
-  const handlesearch = (e:React.FormEvent)=>{
-    e.preventDefault()
-    setPage(1)
-    getdata()
-  }
+  const handlesearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1);
+    getdata();
+  };
   const truncateText = (text: string, maxLength: number) => {
     if (text?.length <= maxLength) {
       return text!;
     }
-    return text?.substring(0, maxLength) + '...';
+    return text?.substring(0, maxLength) + "...";
   };
   const getdata = async () => {
     try {
-        setloading(true)
-      const mdata: any = await axios.post("/api/data",{Page,medname,
-        minPrice: minPrice !== '' ? parseFloat(minPrice as string) : undefined,
-        maxPrice: maxPrice !== '' ? parseFloat(maxPrice as string) : undefined,
+      setloading(true);
+      const mdata: any = await axios.post("/api/data", {
+        Page,
+        medname,
+        minPrice: minPrice !== "" ? parseFloat(minPrice as string) : undefined,
+        maxPrice: maxPrice !== "" ? parseFloat(maxPrice as string) : undefined,
         manufacturer,
-        sort
+        sort,
       });
       console.log("mdata ", mdata.data);
-      const { data,totalPages } = mdata.data;
+      const { data, totalPages } = mdata.data;
       setMedicineData(data);
-      setTotalPages(totalPages)
+      setTotalPages(totalPages);
     } catch (error: any) {
       console.log(error);
-    }finally{
-        setloading(false)
+    } finally {
+      setloading(false);
     }
   };
-  const handlePrevPage = ()=>{
-    if(Page>1){
-        setPage(Page-1)
+  const handlePrevPage = () => {
+    if (Page > 1) {
+      setPage(Page - 1);
     }
-  }
-  const handleNextPage  = ()=>{
-    if(Page<totalPages){
-        setPage(Page+1);
+  };
+  const handleNextPage = () => {
+    if (Page < totalPages) {
+      setPage(Page + 1);
     }
-  }
+  };
   useEffect(() => {
     getalluserdetails();
     getdata();
@@ -77,7 +77,7 @@ export default function Home() {
 
   const logout = async () => {
     try {
-        setloading(true)
+      setloading(true);
       await axios.get("/api/users/logout");
       toast.success("logout successfull");
     } catch (error: any) {
@@ -89,104 +89,135 @@ export default function Home() {
         },
         { status: 400 }
       );
-    }finally{
-        setloading(false)
+    } finally {
+      setloading(false);
     }
   };
   return (
-    !loading && 
-    <div className="flex flex-col items-center justify-between w-[100vw] overflow-x-hidden">
+    !loading && (
+      <div className="flex flex-col items-center justify-between w-[100vw] overflow-x-hidden">
         <div className="w-full flex items-center justify-evenly text-black text-2xl gap-3 mt-4 flex-wrap font-bold max-w-max">
-            <div>
-                <p>{`Hello,`}</p>
-            </div>
-            <div>
-                <p>Welcome to Medler</p>
-            </div>
-            <div className="w-full h-full"> 
-<form className="max-w-sm mx-auto"
-onSubmit={handlesearch}
->   
-    <label htmlFor="default-search"
-     className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="text"
-        name="medname"
-        value={medname}
-        onChange={(e)=> setMedname(e.target.value)} 
-        id="default-search"
-         className="block w-full p-4 ps-10 text-sm text-gray-900 border
+          <div>
+            <p>{`Hello,`}</p>
+          </div>
+          <div>
+            <p>Welcome to Medler</p>
+          </div>
+          <div className="w-full h-full">
+            <form className="max-w-sm mx-auto" onSubmit={handlesearch}>
+              <label
+                htmlFor="default-search"
+                className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              >
+                Search
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  name="medname"
+                  value={medname}
+                  onChange={(e) => setMedname(e.target.value)}
+                  id="default-search"
+                  className="block w-full p-4 ps-10 text-sm text-gray-900 border
          border-gray-300 rounded-lg bg-gray-50
           focus:ring-blue-500 focus:border-blue-500
-           dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Medicines..." required />
-        <button type="submit" 
-        className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 
+           dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search Medicines..."
+                  required
+                />
+                <button
+                  type="submit"
+                  className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 
         focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2
-         dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-    
-</form>
+         dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+          </div>
 
-            </div>
-
-
-
-            <div className="mb-2">
+          <div className="mb-2">
             <form onSubmit={handlesearch}>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
-          <div className="flex flex-col">
-            <input type="text" id="name" placeholder="Manufacturer" name="manufacturer"
-            value={manufacturer} onChange={(e)=> setManufacturer(e.target.value)}
-            className="mt-2 block w-full rounded-md border border-gray-100
-             bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-          </div>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Manufacturer"
+                    name="manufacturer"
+                    value={manufacturer}
+                    onChange={(e) => setManufacturer(e.target.value)}
+                    className="mt-2 block w-full rounded-md border border-gray-100
+             bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  />
+                </div>
 
-          <div className="flex flex-col">
-            {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Min Price</label> */}
-            <input type="number"
-            name="minPrice"
-            value={minPrice}
-            onChange={(e)=> setMinPrice(e.target.value)}
-            className="mt-2 cursor-pointer rounded-md border
+                <div className="flex flex-col">
+                  {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Min Price</label> */}
+                  <input
+                    type="number"
+                    name="minPrice"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="mt-2 cursor-pointer rounded-md border
              border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
-              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-          </div>
-          <div className="flex flex-col">
-            {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Max Price</label> */}
-            <input type="number" 
-            name="maxPrice"
-            value={maxPrice}
-            onChange={(e)=> setMaxPrice(e.target.value)}
-            className="mt-2 block w-full cursor-pointer
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Max Price</label> */}
+                  <input
+                    type="number"
+                    name="maxPrice"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="mt-2 block w-full cursor-pointer
              rounded-md border
              border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
-              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Max Price" />
-          </div>
-          <div className="flex items-center justify-center">
-                
-                <select name="sort" value={sort} onChange={(e) => setSort(e.target.value)} className="mt-2 block w-full cursor-pointer
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    placeholder="Max Price"
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <select
+                    name="sort"
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                    className="mt-2 block w-full cursor-pointer
              rounded-md border
              border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
-              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-          <option value="">Sort By</option>
-          <option value="price_asc">Price - Low to High</option>
-          <option value="price_desc">Price - High to Low</option>
-          <option value="name_asc">Name - A to Z</option>
-          <option value="name_desc">Name - Z to A</option>
-        </select>
-            </div>
-          <div className="mt-2 rounded-md">
-            <Button type="submit">
-                Apply Filter
-            </Button>
-          </div>
-        </div>
-        {/* <div className="relative w-full max-w-sm">
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  >
+                    <option value="">Sort By</option>
+                    <option value="price_asc">Price - Low to High</option>
+                    <option value="price_desc">Price - High to Low</option>
+                    <option value="name_asc">Name - A to Z</option>
+                    <option value="name_desc">Name - Z to A</option>
+                  </select>
+                </div>
+                <div className="mt-2 rounded-md">
+                  <Button type="submit">Apply Filter</Button>
+                </div>
+              </div>
+              {/* <div className="relative w-full max-w-sm">
                     <svg className="absolute top-1/2 -translate-y-1/2 left-4 z-50" width="20" height="20"
                         viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -207,83 +238,77 @@ onSubmit={handlesearch}
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div> */}
-
             </form>
-            
-            </div>
-
-            
-
+          </div>
         </div>
-       <div className="flex items-center justify-evenly w-full h-full 
-       flex-wrap flex-auto gap-4 p-4 max-w-max">
-        {
-            MedicineData.map((item:any,idx:any)=>{
-                const imagesArray = item.Images?.split(',');
-                const firstImage = imagesArray?.find((img: string) => img.endsWith('.jpg'));
-                const truncatedDescription = truncateText(item.Cluster_Description!, 50);
+        <div
+          className="flex items-center justify-evenly w-full h-full 
+       flex-wrap flex-auto gap-4 p-4 max-w-max"
+        >
+          {MedicineData.map((item: any, idx: any) => {
+            const imagesArray = item.Images?.split(",");
+            const firstImage = imagesArray?.find((img: string) =>
+              img.endsWith(".jpg")
+            );
+            const truncatedDescription = truncateText(
+              item.Cluster_Description!,
+              50
+            );
 
-                return (
-                    <div className="w-[400px] h-[400px] flex flex-col 
+            return (
+              <div
+                className="w-[400px] h-[400px] flex flex-col 
                     items-center justify-start 
-                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-gray-400 aspect-square " key={idx}>
-                        <div>
-                            <Image src={firstImage} loading="lazy" alt={item.Medicine_Name}
-                            width={60} height={60} >
-                            </Image>
-                            </div>
-                            <div className="w-full h-full flex flex-col items-center justify-center">
-                            <div className="text-md font-semibold">
-                                <p>{item.Medicine_Name}</p>
-                                </div>
-                            <div className="text-sm font-light">
-                                <p>
-                                    {truncatedDescription}
-                                </p>
-                                </div>
-                            </div>
-                            <div className="w-full flex items-center justify-between gap-3">
-                            <div className="font-bold">
-                                {`Price : ₹ ${item.Discounted_Price}`}
-                            </div>
-                            <div className="text-sm font-medium flex flex-col items-end justify-end">
-                                <div className="text-sm italic">
-                                    Manufactured By : -
-                                </div>
-                                {item.Manufacturer}
-                            </div>
-                            </div>
+                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-gray-400 aspect-square "
+                key={idx}
+              >
+                <div>
+                  <Image
+                    src={firstImage}
+                    loading="lazy"
+                    alt={item.Medicine_Name}
+                    width={60}
+                    height={60}
+                  ></Image>
+                </div>
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                  <div className="text-md font-semibold">
+                    <p>{item.Medicine_Name}</p>
+                  </div>
+                  <div className="text-sm font-light">
+                    <p>{truncatedDescription}</p>
+                  </div>
+                </div>
+                <div className="w-full flex items-center justify-between gap-3">
+                  <div className="font-bold">
+                    {`Price : ₹ ${item.Discounted_Price}`}
+                  </div>
+                  <div className="text-sm font-medium flex flex-col items-end justify-end">
+                    <div className="text-sm italic">Manufactured By : -</div>
+                    {item.Manufacturer}
+                  </div>
+                </div>
 
-                         
-                            <div className="w-full mt-3">
-                                <Link href={item.Medicine_Link}>
-                                <Button variant={"destructive"}>
-                                Buy
-                            </Button>
-                                </Link>
-                           
-                                </div>
-                        </div>
-                )
-})
-        }
-       </div>
+                <div className="w-full mt-3">
+                  <Link href={item.Medicine_Link}>
+                    <Button variant={"destructive"}>Buy</Button>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
-       <div className="flex gap-3 w-full h-full items-center justify-center overflow-hidden">
-        <div>
-            <Button onClick={handlePrevPage}>
-                Previous
-            </Button>
+        <div className="flex gap-3 w-full h-full items-center justify-center overflow-hidden">
+          <div>
+            <Button onClick={handlePrevPage}>Previous</Button>
+          </div>
+          <div>{`Page ${Page} of ${totalPages}`}</div>
+          <div>
+            <Button onClick={handleNextPage}>Next</Button>
+          </div>
         </div>
-        <div>
-            {`Page ${Page} of ${totalPages}`}
-        </div>
-        <div>
-            <Button onClick={handleNextPage}>
-                Next
-            </Button>
-        </div>
-       </div>
-    </div>
+      </div>
+    )
   );
 }
