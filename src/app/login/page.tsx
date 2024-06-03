@@ -25,7 +25,7 @@ export default function page(){
             const response = await axios.post("api/users/login",user)
             console.log("login success");
             toast.success("login success")
-            router.push("/profile")
+            router.push("/home")
             router.forward()
             
         } catch (error:any) {

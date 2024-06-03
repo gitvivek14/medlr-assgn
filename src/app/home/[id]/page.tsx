@@ -35,10 +35,10 @@ const page = () => {
     return (
         <div className="flex flex-col items-center
          justify-center min-h-screen py-2">
-            <h1>Home</h1>
-            <h2>
+            <h1>Home Linked</h1>
+            {/* <h2>
                 {data==='null' ? "Nothing" : <Link href={`/home/${data}`}></Link>}
-            </h2>
+            </h2> */}
             <button className="bg-blue-500
              text-white py-2 px-4" onClick={logout}>
                 Logout
