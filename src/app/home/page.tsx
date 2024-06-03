@@ -98,7 +98,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-between w-[100vw] overflow-x-hidden">
         <div className="w-full flex items-center justify-evenly text-black text-2xl gap-3 mt-4 flex-wrap font-bold max-w-max">
             <div>
-                <p>{`Hello  ${data} ,`}</p>
+                <p>{`Hello,`}</p>
             </div>
             <div>
                 <p>Welcome to Medler</p>
