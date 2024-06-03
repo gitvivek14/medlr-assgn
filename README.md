@@ -1,3 +1,12 @@
+THERE IS A ISSUE IN ROUTING , I WILL FIX IT
+FIRST SIGNUP , THEN LOGIN , THEN YOU CAN GO TO HOME PAGE
+
+HOME PAGE : https://medlr-assgn-7hpp.vercel.app/home
+LOGIN : https://medlr-assgn-7hpp.vercel.app/login
+SIGNUP : https://medlr-assgn-7hpp.vercel.app/signup
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
