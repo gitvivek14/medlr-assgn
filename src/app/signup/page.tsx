@@ -4,7 +4,7 @@ import axios from "axios"
 import  {useRouter} from  "next/navigation"
 import toast from "react-hot-toast"
 import { Input } from "@/components/ui/input"
-export default function signup(){
+export default function Signup(){
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [user,setUser] = useState({

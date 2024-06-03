@@ -10,7 +10,7 @@ import Image from "next/image";
 
   
 
-export default function home() {
+export default function Home() {
     const [Page, setPage] = useState(1)
     const [loading , setloading ] = useState(false)
     const [totalPages, setTotalPages] = useState(1)

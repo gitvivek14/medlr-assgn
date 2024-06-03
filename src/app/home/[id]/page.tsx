@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 import React , { useState } from "react";
 import toast from "react-hot-toast";
 
-const page = () => {
+const Page = () => {
     
     // const [data, setdata] = useState("null")
     // const getalluserdetails = async ()=>{
@@ -46,4 +46,4 @@ const page = () => {
     );
 }
 
-export default page;
+export default Page;
