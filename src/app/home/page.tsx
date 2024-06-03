@@ -105,7 +105,7 @@ export default function home() {
   return (
     !loading && 
     <div className="flex flex-col items-center justify-between w-[100vw] overflow-x-hidden">
-        <div className="w-11/12 flex items-center justify-evenly text-black text-2xl gap-3 mt-4 font-bold max-w-max">
+        <div className="w-full flex items-center justify-evenly text-black text-2xl gap-3 mt-4 flex-wrap font-bold max-w-max">
             <div>
                 <p>{`Hello  ${data} ,`}</p>
             </div>
@@ -143,17 +143,7 @@ onSubmit={handlesearch}
 
             </div>
 
-            <div className="flex items-center justify-center">
-                <form onSubmit={handlesearch}>
-                <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="">Sort By</option>
-          <option value="price_asc">Price - Low to High</option>
-          <option value="price_desc">Price - High to Low</option>
-          <option value="name_asc">Name - A to Z</option>
-          <option value="name_desc">Name - Z to A</option>
-        </select>
-                </form>
-            </div>
+
 
             <div className="mb-2">
             <form onSubmit={handlesearch}>
@@ -186,6 +176,19 @@ onSubmit={handlesearch}
              border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
               focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Max Price" />
           </div>
+          <div className="flex items-center justify-center">
+                
+                <select name="sort" value={sort} onChange={(e) => setSort(e.target.value)} className="mt-2 block w-full cursor-pointer
+             rounded-md border
+             border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+          <option value="">Sort By</option>
+          <option value="price_asc">Price - Low to High</option>
+          <option value="price_desc">Price - High to Low</option>
+          <option value="name_asc">Name - A to Z</option>
+          <option value="name_desc">Name - Z to A</option>
+        </select>
+            </div>
           <div className="mt-2 rounded-md">
             <Button type="submit">
                 Apply Filter
