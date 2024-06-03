@@ -226,7 +226,7 @@ onSubmit={handlesearch}
                 return (
                     <div className="w-[400px] h-[400px] flex flex-col 
                     items-center justify-start 
-                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-slate-400 aspect-square " key={idx}>
+                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-gray-400 aspect-square " key={idx}>
                         <div>
                             <Image src={firstImage} loading="lazy" alt={item.Medicine_Name}
                             width={60} height={60} >
@@ -244,7 +244,7 @@ onSubmit={handlesearch}
                             </div>
                             <div className="w-full flex items-center justify-between gap-3">
                             <div className="font-bold">
-                                {`Price : $ ${item.Discounted_Price}`}
+                                {`Price : ₹ ${item.Discounted_Price}`}
                             </div>
                             <div className="text-sm font-medium flex flex-col items-end justify-end">
                                 <div className="text-sm italic">
@@ -283,9 +283,7 @@ onSubmit={handlesearch}
                 Next
             </Button>
         </div>
-       
        </div>
-
     </div>
   );
 }
