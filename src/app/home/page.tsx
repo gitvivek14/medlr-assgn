@@ -7,9 +7,23 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination"
+  
 
 export default function home() {
-  const [data, setdata] = useState("null");
+    const [Page, setPage] = useState(1)
+    const [loading , setloading ] = useState(false)
+    const [totalPages, setTotalPages] = useState(1)
+    const [data, setdata] = useState("null");
+    const [medname, setMedname] = useState('')
   const [MedicineData, setMedicineData] = useState([]);
   const router = useRouter();
   const getalluserdetails = async () => {
@@ -18,9 +32,14 @@ export default function home() {
       console.log(userdata.data.data._id);
       setdata(userdata.data.data._id);
     } catch (error: any) {
-      throw new Error(error.message);
+      console.log(error);
     }
   };
+  const handlesearch = (e:React.FormEvent)=>{
+    e.preventDefault()
+    setPage(1)
+    getdata()
+  }
   const truncateText = (text: string, maxLength: number) => {
     if (text?.length <= maxLength) {
       return text!;
@@ -29,21 +48,36 @@ export default function home() {
   };
   const getdata = async () => {
     try {
-      const mdata: any = await axios.get("/api/data");
+        setloading(true)
+      const mdata: any = await axios.post("/api/data",{Page,medname});
       console.log("mdata ", mdata.data);
-      const { data } = mdata.data;
+      const { data,totalPages } = mdata.data;
       setMedicineData(data);
+      setTotalPages(totalPages)
     } catch (error: any) {
-      throw new Error(error.message);
+      console.log(error);
+    }finally{
+        setloading(false)
     }
   };
+  const handlePrevPage = ()=>{
+    if(Page>1){
+        setPage(Page-1)
+    }
+  }
+  const handleNextPage  = ()=>{
+    if(Page<totalPages){
+        setPage(Page+1);
+    }
+  }
   useEffect(() => {
     getalluserdetails();
     getdata();
-  }, [data]);
+  }, [Page]);
 
   const logout = async () => {
     try {
+        setloading(true)
       await axios.get("/api/users/logout");
       toast.success("logout successfull");
     } catch (error: any) {
@@ -55,16 +89,48 @@ export default function home() {
         },
         { status: 400 }
       );
+    }finally{
+        setloading(false)
     }
   };
   return (
-    <div className="flex flex-col items-center justify-between w-[100vw] h-[100vh] overflow-x-hidden">
-        <div className="flex items-center justify-center text-black text-2xl gap-3 mt-4 font-bold">
+    !loading && 
+    <div className="flex flex-col items-center justify-between w-[100vw] overflow-x-hidden">
+        <div className="w-11/12 flex items-center justify-evenly text-black text-2xl gap-3 mt-4 font-bold max-w-max">
             <div>
                 <p>{`Hello  ${data} ,`}</p>
             </div>
             <div>
                 <p>Welcome to Medler</p>
+            </div>
+            <div className="w-full h-full"> 
+<form className="max-w-md mx-auto"
+onSubmit={handlesearch}
+>   
+    <label htmlFor="default-search"
+     className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="text"
+        name="medname"
+        value={medname}
+        onChange={(e)=> setMedname(e.target.value)} 
+        id="default-search"
+         className="block w-full p-4 ps-10 text-sm text-gray-900 border
+         border-gray-300 rounded-lg bg-gray-50
+          focus:ring-blue-500 focus:border-blue-500
+           dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Medicines..." required />
+        <button type="submit" 
+        className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 
+        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2
+         dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+
             </div>
         </div>
        <div className="flex items-center justify-evenly w-full h-full 
@@ -80,7 +146,7 @@ export default function home() {
                     items-center justify-start 
                     rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-slate-400 aspect-square ">
                         <div>
-                            <img src={firstImage} loading="lazy" 
+                            <img src={firstImage} loading="lazy" alt={item.Medicine_Name}
                             width={60} height={60} >
                             </img>
                             </div>
@@ -108,9 +174,12 @@ export default function home() {
 
                          
                             <div className="w-full mt-3">
-                            <Button variant={"destructive"}>
+                                <Link href={item.Medicine_Link}>
+                                <Button variant={"destructive"}>
                                 Buy
                             </Button>
+                                </Link>
+                           
                                 </div>
                         </div>
                 )
@@ -119,6 +188,23 @@ export default function home() {
 })
         }
 
+       </div>
+
+       <div className="flex gap-3 w-full h-full items-center justify-center overflow-hidden">
+        <div>
+            <Button onClick={handlePrevPage}>
+                Previous
+            </Button>
+        </div>
+        <div>
+            {`Page ${Page} of ${totalPages}`}
+        </div>
+        <div>
+            <Button onClick={handleNextPage}>
+                Next
+            </Button>
+        </div>
+       
        </div>
 
     </div>
