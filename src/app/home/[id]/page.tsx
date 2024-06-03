@@ -8,17 +8,16 @@ import toast from "react-hot-toast";
 
 const page = () => {
     
-    const [data, setdata] = useState("null")
-    const router = useRouter()
-    const getalluserdetails = async ()=>{
-        try {
-            const userdata = await axios.get('/api/users/me')
-            console.log(userdata.data);
-            setdata(userdata.data.data._id)
-        } catch (error:any) {
-           throw new Error(error.message) 
-        }
-    }
+    // const [data, setdata] = useState("null")
+    // const getalluserdetails = async ()=>{
+    //     try {
+    //         const userdata = await axios.get('/api/users/me')
+    //         console.log(userdata.data);
+    //         setdata(userdata.data.data._id)
+    //     } catch (error:any) {
+    //        throw new Error(error.message) 
+    //     }
+    // }
     const logout  = async ()=>{
         try {
             await axios.get("/api/users/logout")

@@ -5,17 +5,9 @@ import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-  } from "@/components/ui/pagination"
+import Image from "next/image";
+
   
 
 export default function home() {
@@ -29,7 +21,6 @@ export default function home() {
   const [manufacturer, setManufacturer] = useState('');
     const [medname, setMedname] = useState('')
   const [MedicineData, setMedicineData] = useState([]);
-  const router = useRouter();
   const getalluserdetails = async () => {
     try {
       const userdata = await axios.get("/api/users/me");
@@ -235,11 +226,11 @@ onSubmit={handlesearch}
                 return (
                     <div className="w-[400px] h-[400px] flex flex-col 
                     items-center justify-start 
-                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-slate-400 aspect-square ">
+                    rounded-lg border border-gray-200 p-3 max-w-sm shadow-md hover:bg-slate-400 aspect-square " key={idx}>
                         <div>
-                            <img src={firstImage} loading="lazy" alt={item.Medicine_Name}
+                            <Image src={firstImage} loading="lazy" alt={item.Medicine_Name}
                             width={60} height={60} >
-                            </img>
+                            </Image>
                             </div>
                             <div className="w-full h-full flex flex-col items-center justify-center">
                             <div className="text-md font-semibold">
@@ -274,11 +265,8 @@ onSubmit={handlesearch}
                                 </div>
                         </div>
                 )
-               
-
 })
         }
-
        </div>
 
        <div className="flex gap-3 w-full h-full items-center justify-center overflow-hidden">
