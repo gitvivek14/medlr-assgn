@@ -23,6 +23,10 @@ export default function home() {
     const [loading , setloading ] = useState(false)
     const [totalPages, setTotalPages] = useState(1)
     const [data, setdata] = useState("null");
+    const [sort, setSort] = useState('');
+    const [minPrice, setMinPrice] = useState<number | string>('');
+  const [maxPrice, setMaxPrice] = useState<number | string>('');
+  const [manufacturer, setManufacturer] = useState('');
     const [medname, setMedname] = useState('')
   const [MedicineData, setMedicineData] = useState([]);
   const router = useRouter();
@@ -49,7 +53,12 @@ export default function home() {
   const getdata = async () => {
     try {
         setloading(true)
-      const mdata: any = await axios.post("/api/data",{Page,medname});
+      const mdata: any = await axios.post("/api/data",{Page,medname,
+        minPrice: minPrice !== '' ? parseFloat(minPrice as string) : undefined,
+        maxPrice: maxPrice !== '' ? parseFloat(maxPrice as string) : undefined,
+        manufacturer,
+        sort
+      });
       console.log("mdata ", mdata.data);
       const { data,totalPages } = mdata.data;
       setMedicineData(data);
@@ -104,7 +113,7 @@ export default function home() {
                 <p>Welcome to Medler</p>
             </div>
             <div className="w-full h-full"> 
-<form className="max-w-md mx-auto"
+<form className="max-w-sm mx-auto"
 onSubmit={handlesearch}
 >   
     <label htmlFor="default-search"
@@ -129,9 +138,88 @@ onSubmit={handlesearch}
         focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2
          dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
     </div>
+    
 </form>
 
             </div>
+
+            <div className="flex items-center justify-center">
+                <form onSubmit={handlesearch}>
+                <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="">Sort By</option>
+          <option value="price_asc">Price - Low to High</option>
+          <option value="price_desc">Price - High to Low</option>
+          <option value="name_asc">Name - A to Z</option>
+          <option value="name_desc">Name - Z to A</option>
+        </select>
+                </form>
+            </div>
+
+            <div className="mb-2">
+            <form onSubmit={handlesearch}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+          <div className="flex flex-col">
+            <input type="text" id="name" placeholder="Manufacturer" name="manufacturer"
+            value={manufacturer} onChange={(e)=> setManufacturer(e.target.value)}
+            className="mt-2 block w-full rounded-md border border-gray-100
+             bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+          </div>
+
+          <div className="flex flex-col">
+            {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Min Price</label> */}
+            <input type="number"
+            name="minPrice"
+            value={minPrice}
+            onChange={(e)=> setMinPrice(e.target.value)}
+            className="mt-2 cursor-pointer rounded-md border
+             border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+          </div>
+          <div className="flex flex-col">
+            {/* <label htmlFor="date" className="text-sm font-medium text-stone-600">Max Price</label> */}
+            <input type="number" 
+            name="maxPrice"
+            value={maxPrice}
+            onChange={(e)=> setMaxPrice(e.target.value)}
+            className="mt-2 block w-full cursor-pointer
+             rounded-md border
+             border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none
+              focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Max Price" />
+          </div>
+          <div className="mt-2 rounded-md">
+            <Button type="submit">
+                Apply Filter
+            </Button>
+          </div>
+        </div>
+        {/* <div className="relative w-full max-w-sm">
+                    <svg className="absolute top-1/2 -translate-y-1/2 left-4 z-50" width="20" height="20"
+                        viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M16.5555 3.33203H3.44463C2.46273 3.33203 1.66675 4.12802 1.66675 5.10991C1.66675 5.56785 1.84345 6.00813 2.16004 6.33901L6.83697 11.2271C6.97021 11.3664 7.03684 11.436 7.0974 11.5068C7.57207 12.062 7.85127 12.7576 7.89207 13.4869C7.89728 13.5799 7.89728 13.6763 7.89728 13.869V16.251C7.89728 17.6854 9.30176 18.6988 10.663 18.2466C11.5227 17.961 12.1029 17.157 12.1029 16.251V14.2772C12.1029 13.6825 12.1029 13.3852 12.1523 13.1015C12.2323 12.6415 12.4081 12.2035 12.6683 11.8158C12.8287 11.5767 13.0342 11.3619 13.4454 10.9322L17.8401 6.33901C18.1567 6.00813 18.3334 5.56785 18.3334 5.10991C18.3334 4.12802 17.5374 3.33203 16.5555 3.33203Z"
+                            stroke="black" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                    <select id="Offer"
+                        className="h-12 border border-gray-300 text-gray-900 pl-11 text-base font-normal leading-7 rounded-full block w-full py-2.5 px-4 appearance-none relative focus:outline-none bg-white transition-all duration-500 hover:border-gray-400 hover:bg-gray-50 focus-within:bg-gray-50">
+                        <option selected>Sort </option>
+                        <option value="option 1">option 1</option>
+                        <option value="option 2">option 2</option>
+                        <option value="option 3">option 3</option>
+                        <option value="option 4">option 4</option>
+                    </select>
+                    <svg className="absolute top-1/2 -translate-y-1/2 right-4 z-50" width="16" height="16"
+                        viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.0002 5.99845L8.00008 9.99862L3.99756 5.99609" stroke="#111827" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div> */}
+
+            </form>
+            
+            </div>
+
+            
+
         </div>
        <div className="flex items-center justify-evenly w-full h-full 
        flex-wrap flex-auto gap-4 p-4 max-w-max">
