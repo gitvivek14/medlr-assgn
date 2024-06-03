@@ -84,7 +84,7 @@ export default function Page(){
                     />
                 </label>
                 <button className="p-2 border
-             border-gray-300 rounded-lg mb-4 text-white
+             border-gray-300 rounded-lg mb-4 text-black
              focus:outline-none focus:border-gray-600"
              onClick={onLogin}
              >
