@@ -9,6 +9,11 @@ LOGIN : https://medlr-assgn-7hpp.vercel.app/login
 SIGNUP : https://medlr-assgn-7hpp.vercel.app/signup
 
 
+<h1>ScreenShots</h1>
+![image](https://github.com/gitvivek14/medlr-assgn/assets/118727613/2661bdc2-771f-4abc-9e74-898c8897ab32)
+
+![image](https://github.com/gitvivek14/medlr-assgn/assets/118727613/b88384a0-c610-4efa-9d27-758e74a70fb8)
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
