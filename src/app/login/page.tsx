@@ -1,6 +1,7 @@
 "use client"
 import React,{useState,useEffect} from "react"
 import axios from "axios"
+import Link from "next/link";
 import  {useRouter} from  "next/navigation"
 import toast from "react-hot-toast"
 import { Input } from "@/components/ui/input"
@@ -92,6 +93,11 @@ export default function Page(){
                     buttondisabled ? "No Login":"Login"
                 }
             </button>
+            <div>
+                <Link href="/signup">
+                    Sign Up 
+                </Link>
+            </div>
             </form>
             </div>
     </div>
